@@ -1,0 +1,21 @@
+{
+  "disclose": [
+    "share",
+    "make available",
+    "provide information",
+    "we will use your information",
+    "we will use your data",
+    "use your information",
+    "use your data"
+  ],
+  "close": [
+    "terminate",
+    "shut",
+    "freeze",
+    "block"
+  ],
+  "not": [
+    "no",
+    "never"
+  ]
+}

@@ -1,0 +1,158 @@
+{
+  "data_actions": [
+    "share",
+    "disclose",
+    "transfer",
+    "sell",
+    "provide",
+    "process",
+    "use",
+    "store",
+    "retain",
+    "profile",
+    "combine"
+  ],
+  "data_objects": [
+    "personal data",
+    "personal information",
+    "pii",
+    "contact details",
+    "email",
+    "phone number",
+    "mobile number",
+    "address",
+    "pan",
+    "aadhaar",
+    "financial data",
+    "account information",
+    "transaction data",
+    "kyc data",
+    "profile data",
+    "browsing history",
+    "cookies",
+    "device information"
+  ],
+  "closure_actions": [
+    "close",
+    "terminate",
+    "suspend",
+    "block",
+    "freeze",
+    "restrict",
+    "deactivate",
+    "disable",
+    "withdraw"
+  ],
+  "closure_objects": [
+    "account",
+    "loan",
+    "card",
+    "services",
+    "service",
+    "access",
+    "facility",
+    "membership",
+    "portal"
+  ],
+  "time_modifiers": [
+    "at any time",
+    "from time to time",
+    "without notice",
+    "without prior notice",
+    "immediately",
+    "with immediate effect",
+    "without informing you"
+  ],
+  "discretion_modifiers": [
+    "sole discretion",
+    "absolute discretion",
+    "as we deem fit",
+    "as we see fit",
+    "at our option"
+  ],
+  "liability_actions": [
+    "not liable",
+    "no liability",
+    "without responsibility",
+    "shall not be responsible",
+    "we are not responsible",
+    "no obligation",
+    "no warranty"
+  ],
+  "liability_objects": [
+    "loss",
+    "losses",
+    "damage",
+    "damages",
+    "consequential loss",
+    "indirect loss",
+    "loss of profit",
+    "loss of profits",
+    "data loss",
+    "service interruption"
+  ],
+  "indemnity_actions": [
+    "indemnify",
+    "indemnification",
+    "hold harmless",
+    "defend and indemnify"
+  ],
+  "indemnity_objects": [
+    "claims",
+    "losses",
+    "damages",
+    "liabilities",
+    "costs",
+    "expenses",
+    "third party claims",
+    "third-party claims"
+  ],
+  "fees_actions": [
+    "charge",
+    "levy",
+    "debit",
+    "deduct",
+    "recover",
+    "impose",
+    "bill"
+  ],
+  "fees_objects": [
+    "fee",
+    "fees",
+    "charge",
+    "charges",
+    "penalty",
+    "penalties",
+    "interest",
+    "late fee",
+    "processing fee",
+    "service fee"
+  ],
+  "auto_renewal": [
+    "auto-renew",
+    "automatic renewal",
+    "automatically renew",
+    "recurring payment",
+    "standing instruction",
+    "subscription renewal"
+  ],
+  "marketing_sharing": [
+    "marketing partners",
+    "advertising partners",
+    "ad partners",
+    "business partners",
+    "third party partners",
+    "analytics providers"
+  ],
+  "tracking_terms": [
+    "cookies",
+    "cookie",
+    "tracking technologies",
+    "tracking technology",
+    "pixel tags",
+    "web beacons",
+    "track your activity",
+    "monitor your usage",
+    "online identifiers"
+  ]
+}

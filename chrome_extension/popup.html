@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>AutoPolicy Risk Helper</title>
+
+  <!-- All styling inline so we don't depend on an external popup.css -->
+  <style>
+    :root {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color-scheme: dark;
+    }
+
+    body {
+      margin: 0;
+      padding: 10px;
+      width: 360px;
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      color: #e5e7eb;
+    }
+
+    h1 {
+      font-size: 18px;
+      margin: 0 0 8px;
+      text-align: center;
+      color: #f97316;
+    }
+
+    .section {
+      background: rgba(15, 23, 42, 0.95);
+      border-radius: 12px;
+      padding: 10px;
+      margin-bottom: 10px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+    }
+
+    label {
+      font-size: 12px;
+      color: #cbd5f5;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    input[type="email"],
+    textarea {
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid #475569;
+      padding: 6px 8px;
+      margin-bottom: 8px;
+      font-size: 12px;
+      background: #020617;
+      color: #e5e7eb;
+      box-sizing: border-box;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 60px;
+      max-height: 140px;
+    }
+
+    button {
+      width: 100%;
+      border-radius: 999px;
+      border: none;
+      padding: 8px 10px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 6px;
+      background: linear-gradient(135deg, #f97316, #fb923c);
+      color: #0f172a;
+      box-shadow: 0 8px 20px rgba(248, 139, 60, 0.6);
+      transition: transform 0.08s ease-out, box-shadow 0.08s ease-out;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 25px rgba(248, 139, 60, 0.8);
+    }
+
+    button:active {
+      transform: translateY(0);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
+    }
+
+    .sub-btn {
+      background: transparent;
+      border: 1px solid #64748b;
+      color: #e5e7eb;
+      box-shadow: none;
+      margin-top: 2px;
+    }
+
+    .sub-btn:hover {
+      background: rgba(15, 23, 42, 0.7);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+    }
+
+    .hint {
+      font-size: 11px;
+      color: #9ca3af;
+      margin-top: -4px;
+      margin-bottom: 6px;
+    }
+
+    .status {
+      font-size: 12px;
+      margin-top: 4px;
+      min-height: 16px;
+    }
+
+    .status.ok {
+      color: #22c55e;
+    }
+
+    .status.err {
+      color: #f97373;
+    }
+
+    .pill-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 6px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      flex: 1;
+      min-width: 80px;
+      text-align: center;
+      border-radius: 999px;
+      padding: 4px 6px;
+      font-size: 11px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid #334155;
+    }
+
+    .pill-label {
+      font-size: 10px;
+      color: #9ca3af;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .pill-value {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .pill-rating-A {
+      border-color: #22c55e;
+      color: #22c55e;
+    }
+
+    .pill-rating-B {
+      border-color: #eab308;
+      color: #eab308;
+    }
+
+    .pill-rating-C {
+      border-color: #f97316;
+      color: #f97316;
+    }
+
+    .pill-rating-D {
+      border-color: #ef4444;
+      color: #fb7185;
+    }
+
+    .risk-types {
+      margin-top: 6px;
+      font-size: 11px;
+    }
+
+    .risk-types span {
+      display: inline-block;
+      margin-right: 6px;
+      margin-bottom: 4px;
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid #4b5563;
+    }
+
+    .clauses-list {
+      max-height: 120px;
+      overflow-y: auto;
+      font-size: 11px;
+      margin-top: 6px;
+      padding-right: 4px;
+    }
+
+    .clause-item {
+      margin-bottom: 6px;
+      padding-bottom: 4px;
+      border-bottom: 1px dashed #334155;
+    }
+
+    .clause-item:last-child {
+      border-bottom: none;
+    }
+
+    .clause-tag {
+      font-size: 10px;
+      color: #fb7185;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .footer-note {
+      font-size: 10px;
+      color: #9ca3af;
+      margin-top: 6px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>AutoPolicy</h1>
+
+  <div class="section">
+    <label for="email">User email</label>
+    <input
+      type="email"
+      id="email"
+      placeholder="testuser@example.com"
+      value="testuser@example.com"
+    />
+    <div class="hint">
+      For now this is just stored locally in the extension.
+    </div>
+
+    <button id="btn-use-selection">Use selected text on page</button>
+    <button id="btn-scan-page" class="sub-btn">Scan whole page</button>
+    <button id="btn-clear" class="sub-btn">Clear text</button>
+
+    <label for="text">Text to analyze</label>
+    <textarea
+      id="text"
+      placeholder="Select or paste legal text, then click Analyze."
+    ></textarea>
+
+    <button id="btn-analyze">Analyze risk</button>
+    <div id="status" class="status"></div>
+  </div>
+
+  <div class="section" id="results-section" style="display: none;">
+    <div class="pill-row">
+      <div class="pill">
+        <span class="pill-label">Risk %</span>
+        <span class="pill-value" id="risk-percent">0%</span>
+      </div>
+      <div class="pill" id="rating-pill">
+        <span class="pill-label">Rating</span>
+        <span class="pill-value" id="risk-rating">-</span>
+      </div>
+      <div class="pill">
+        <span class="pill-label">Risky / Total</span>
+        <span class="pill-value" id="risk-count">0 / 0</span>
+      </div>
+    </div>
+
+    <div class="risk-types" id="risk-types"></div>
+
+    <div class="clauses-list" id="clauses-list"></div>
+
+    <div class="footer-note">
+      This is a helper tool. Final responsibility stays with the document owner / client.
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

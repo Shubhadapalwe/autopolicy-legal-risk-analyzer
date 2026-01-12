@@ -1,0 +1,38 @@
+[
+  {
+    "tag": "data_sharing",
+    "actions": ["data_actions"],
+    "objects": ["data_objects"],
+    "modifiers_any": ["time_modifiers", "discretion_modifiers", "marketing_sharing"]
+  },
+  {
+    "tag": "account_closure",
+    "actions": ["closure_actions"],
+    "objects": ["closure_objects"],
+    "modifiers_any": ["time_modifiers", "discretion_modifiers"]
+  },
+  {
+    "tag": "fees_charges",
+    "actions": ["fees_actions"],
+    "objects": ["fees_objects"],
+    "modifiers_any": ["time_modifiers"]
+  },
+  {
+    "tag": "liability_limit",
+    "actions": ["liability_actions"],
+    "objects": ["liability_objects"],
+    "modifiers_any": ["time_modifiers", "discretion_modifiers"]
+  },
+  {
+    "tag": "indemnity",
+    "actions": ["indemnity_actions"],
+    "objects": ["indemnity_objects"],
+    "modifiers_any": []
+  },
+  {
+    "tag": "tracking",
+    "actions": ["tracking_terms"],
+    "objects": [],
+    "modifiers_any": []
+  }
+]

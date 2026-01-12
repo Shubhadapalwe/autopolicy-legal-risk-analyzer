@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>AutoPolicy – Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body class="auth-body">
+    <!-- Floating legal-themed orbs -->
+    <div class="auth-orb orb-1"></div>
+    <div class="auth-orb orb-2"></div>
+    <div class="auth-orb orb-3"></div>
+
+    <div class="auth-page">
+        <!-- Left: Hero / branding -->
+        <section class="auth-hero">
+            <div class="auth-logo-row">
+                <div class="auth-logo-circle">
+                    ⚖️
+                </div>
+                <div class="auth-logo-text">
+                    <div class="auth-logo-title">AutoPolicy</div>
+                    <div class="auth-logo-subtitle">Legal Risk Analyzer</div>
+                </div>
+            </div>
+
+            <h1 class="auth-hero-title">
+                Turn 30-page<br>legal documents into<br><span>3-second insights.</span>
+            </h1>
+
+            <p class="auth-hero-text">
+                Upload PDFs or screenshots, let AutoPolicy scan every clause,
+                colour the risky parts (🔴🟠🟡), and show you a clean dashboard
+                instead of legal headache.
+            </p>
+
+            <div class="auth-hero-chips">
+                <div class="auth-chip">
+                    🔍 Clause-level risk scoring
+                </div>
+                <div class="auth-chip">
+                    📊 A–D grade per document
+                </div>
+                <div class="auth-chip">
+                    🧩 Chrome extension support
+                </div>
+            </div>
+
+            <div class="auth-hero-meta">
+                <div>
+                    <div class="auth-meta-label">Analysed clauses</div>
+                    <div class="auth-meta-value">10,000+</div>
+                </div>
+                <div>
+                    <div class="auth-meta-label">Focus domains</div>
+                    <div class="auth-meta-value">Loans · E-commerce · Apps</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Right: Login card -->
+        <section class="auth-panel">
+            <div class="auth-card">
+
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="auth-flash-list">
+                        {% for category, msg in messages %}
+                            <div class="auth-flash auth-flash-{{ category }}">
+                                {{ msg }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                {% endwith %}
+
+                <h2 class="auth-card-title">Welcome back</h2>
+                <p class="auth-card-subtitle">
+                    Log in to upload legal docs, view risk dashboards, and use
+                    the same account from your Chrome extension.
+                </p>
+
+                <form method="post" action="{{ url_for('login') }}" class="auth-form">
+                    <div class="auth-field">
+                        <label for="email" class="auth-label">Email</label>
+                        <div class="auth-input-wrapper">
+                            <span class="auth-input-icon">📧</span>
+                            <input
+                                id="email"
+                                name="email"
+                                type="email"
+                                required
+                                autocomplete="email"
+                                class="auth-input"
+                                placeholder="you@example.com"
+                            >
+                        </div>
+                    </div>
+
+                    <div class="auth-field">
+                        <label for="password" class="auth-label">Password</label>
+                        <div class="auth-input-wrapper">
+                            <span class="auth-input-icon">🔒</span>
+                            <input
+                                id="password"
+                                name="password"
+                                type="password"
+                                required
+                                autocomplete="current-password"
+                                class="auth-input"
+                                placeholder="••••••••"
+                            >
+                        </div>
+                    </div>
+
+                    <button type="submit" class="auth-btn-primary">
+                        Sign in to dashboard
+                    </button>
+                </form>
+
+                <p class="auth-bottom-text">
+                    New to AutoPolicy?
+                    <a href="{{ url_for('register') }}" class="auth-link">
+                        Create a free account
+                    </a>
+                </p>
+
+                <p class="auth-small-print">
+                    By signing in you agree that this is a
+                    <strong>helper tool</strong> – final legal responsibility
+                    always stays with the document owner.
+                </p>
+            </div>
+
+            <p class="auth-footer-note">
+                Tip: Use the <strong>same email</strong> here and in the Chrome extension
+                so your clause highlights and dashboard stay in sync.
+            </p>
+        </section>
+    </div>
+</body>
+</html>

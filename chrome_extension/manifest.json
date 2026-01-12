@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "name": "AutoPolicy Risk Helper",
+  "version": "1.0.0",
+  "description": "Select legal text on any page and send it to your AutoPolicy backend for risk analysis.",
+  "permissions": [
+    "scripting",
+    "activeTab",
+    "storage"
+  ],
+  "host_permissions": [
+    "http://127.0.0.1:5000/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Analyze legal text with AutoPolicy"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content_script.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}

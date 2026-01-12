@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>AutoPolicy – Document {{ document.id }}</title>
+
+    <!-- Main shared CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+    <!-- Chart.js for the per-document pie chart -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="page">
+        <!-- Top bar / header -->
+        <header class="top-bar">
+            <div class="logo">
+                AutoPolicy
+            </div>
+            <div class="top-bar-right">
+                <span class="top-bar-subtitle">Legal Risk Analyzer</span>
+                <a href="{{ url_for('index') }}" class="btn btn-secondary small-btn">
+                    ← Back to dashboard
+                </a>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <!-- Document summary card -->
+            <section class="card">
+                <h1>Document details</h1>
+
+                <div class="doc-meta-grid">
+                    <div>
+                        <div class="label">Filename</div>
+                        <div class="value">{{ document.original_filename }}</div>
+                    </div>
+                    <div>
+                        <div class="label">Total clauses</div>
+                        <div class="value">{{ document.total_clauses or 0 }}</div>
+                    </div>
+                    <div>
+                        <div class="label">Risky clauses</div>
+                        <div class="value">{{ document.risky_clauses or 0 }}</div>
+                    </div>
+                    <div>
+                        <div class="label">Risk %</div>
+                        <div class="value">
+                            {% if document.total_clauses %}
+                                {{ (document.risky_clauses * 100.0 / document.total_clauses) | round(2) }}
+                            {% else %}
+                                0.00
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div>
+                        <div class="label">Rating</div>
+                        <div class="badge badge-rating">
+                            {{ document.overall_rating or "-" }}
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Chart + summary -->
+            <section class="card">
+                <h2>Risk distribution</h2>
+
+                <div class="chart-wrapper single-chart">
+                    <canvas id="riskPie"></canvas>
+                </div>
+
+                <p class="helper-text">
+                    Shows how risky clauses in this document are distributed by category.
+                </p>
+            </section>
+
+            <!-- Risky clauses list -->
+            <section class="card">
+                <h2>Risky clauses (detailed view)</h2>
+
+                {% if risky_clauses and risky_clauses|length > 0 %}
+                    <ol class="clause-list">
+                        {% for c in risky_clauses %}
+                            <li class="clause-item">
+                                <div class="clause-header">
+                                    <span class="clause-id">
+                                        Clause {{ c.clause_number }}
+                                    </span>
+                                    <span class="clause-score">
+                                        Score: {{ c.model_risk_score }}
+                                    </span>
+                                    <span class="clause-tags">
+                                        {{ c.model_risk_reason }}
+                                    </span>
+                                </div>
+                                <p class="clause-text">
+                                    {{ c.text }}
+                                </p>
+                            </li>
+                        {% endfor %}
+                    </ol>
+                {% else %}
+                    <p>No risky clauses were detected in this document by the current rules.</p>
+                {% endif %}
+
+                <p class="helper-text">
+                    This is a helper tool. Final responsibility always stays with the document owner / client.
+                </p>
+            </section>
+        </main>
+    </div>
+
+    <!-- Build chart data from Jinja variables -->
+    <script>
+        (function () {
+            var canvas = document.getElementById("riskPie");
+            if (!canvas) {
+                return;
+            }
+
+            var ctx = canvas.getContext("2d");
+
+            var labels = [
+                {% for r in risk_distribution %}
+                    "{{ r.risk_type }}"{% if not loop.last %}, {% endif %}
+                {% endfor %}
+            ];
+
+            var values = [
+                {% for r in risk_distribution %}
+                    {{ r.risky_clauses }}{% if not loop.last %}, {% endif %}
+                {% endfor %}
+            ];
+
+            // If there is no risk data, show a neutral single slice
+            if (!labels.length) {
+                labels = ["no_risk"];
+                values = [1];
+            }
+
+            new Chart(ctx, {
+                type: "pie",
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: values
+                    }]
+                },
+                options: {
+                    plugins: {
+                        legend: {
+                            position: "bottom"
+                        },
+                        title: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        })();
+    </script>
+</body>
+</html>

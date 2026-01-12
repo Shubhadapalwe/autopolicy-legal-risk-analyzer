@@ -1,0 +1,373 @@
+/* ===== Global layout ===== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  --bg-main: #050816;
+  --bg-card: #0f172a;
+  --bg-card-soft: #111827;
+  --accent: #f97316;
+  --accent-soft: rgba(249, 115, 22, 0.1);
+  --text-main: #e5e7eb;
+  --text-muted: #9ca3af;
+  --border-subtle: #1f2937;
+  --danger: #ef4444;
+  --radius-lg: 16px;
+  --radius-md: 12px;
+  --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.45);
+  --font-main: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    "Segoe UI", sans-serif;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-main);
+  background: radial-gradient(circle at top, #111827 0, #020617 45%, #000 100%);
+  color: var(--text-main);
+}
+
+/* Wrapper */
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== Top bar / header ===== */
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 28px;
+  border-bottom: 1px solid var(--border-subtle);
+  background: rgba(3, 7, 18, 0.9);
+  backdrop-filter: blur(14px);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.logo {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+}
+
+.top-bar-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.top-bar-subtitle {
+  font-size: 13px;
+  color: var(--text-muted);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* ===== Main content ===== */
+
+.main-content {
+  flex: 1;
+  padding: 24px;
+  max-width: 1180px;
+  margin: 0 auto 40px auto;
+}
+
+/* Cards */
+
+.card {
+  background: linear-gradient(135deg, #020617 0, #020617 55%, #111827 100%);
+  border-radius: var(--radius-lg);
+  padding: 20px 24px;
+  box-shadow: var(--shadow-soft);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  margin-bottom: 24px;
+}
+
+.card h1,
+.card h2,
+.card h3 {
+  margin: 0 0 10px 0;
+  font-weight: 700;
+}
+
+.card h1 {
+  font-size: 24px;
+}
+
+.card h2 {
+  font-size: 19px;
+}
+
+.card h3 {
+  font-size: 16px;
+}
+
+/* Helper text */
+
+.helper-text {
+  margin: 6px 0 14px 0;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* ===== Upload form ===== */
+
+.upload-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.upload-form input[type="file"] {
+  font-size: 13px;
+  color: var(--text-main);
+}
+
+.btn {
+  border-radius: 999px;
+  border: none;
+  padding: 8px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.16s ease-out;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #111827;
+  box-shadow: 0 10px 30px rgba(249, 115, 22, 0.55);
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 16px 40px rgba(249, 115, 22, 0.7);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--text-main);
+  border: 1px solid rgba(148, 163, 184, 0.6);
+}
+
+.btn-secondary:hover {
+  background: rgba(15, 23, 42, 0.85);
+}
+
+/* Small version (back to dashboard) */
+
+.small-btn {
+  padding: 6px 14px;
+  font-size: 11px;
+}
+
+/* Simple link */
+
+a.link {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 13px;
+}
+
+a.link:hover {
+  text-decoration: underline;
+}
+
+/* ===== Tables ===== */
+
+.doc-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+.doc-table thead tr {
+  background: rgba(15, 23, 42, 0.96);
+}
+
+.doc-table th,
+.doc-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid rgba(31, 41, 55, 0.9);
+}
+
+.doc-table th {
+  text-align: left;
+  font-weight: 600;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.doc-table tbody tr:nth-child(even) {
+  background: rgba(15, 23, 42, 0.7);
+}
+
+.doc-table tbody tr:hover {
+  background: rgba(30, 64, 175, 0.4);
+}
+
+/* ===== Badges / labels ===== */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.badge-rating {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+/* Label + value pair */
+
+.label {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  margin-bottom: 2px;
+}
+
+.value {
+  font-size: 14px;
+}
+
+/* Document meta grid (detail page) */
+
+.doc-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+  margin-top: 10px;
+}
+
+/* ===== Chart layout ===== */
+
+.chart-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 18px;
+  margin-top: 12px;
+}
+
+.chart-wrapper {
+  background: var(--bg-card-soft);
+  border-radius: var(--radius-md);
+  padding: 12px 14px 18px 14px;
+  border: 1px solid rgba(31, 41, 55, 0.9);
+  min-height: 230px;
+  display: flex;
+  flex-direction: column;
+}
+
+.chart-wrapper h3 {
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+
+.chart-wrapper canvas {
+  flex: 1;
+}
+
+/* Single big chart on detail page */
+
+.chart-wrapper.single-chart {
+  min-height: 260px;
+}
+
+/* ===== Clause list (detail page) ===== */
+
+.clause-list {
+  padding-left: 18px;
+  margin: 12px 0 0 0;
+}
+
+.clause-item {
+  margin-bottom: 18px;
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  background: var(--bg-card-soft);
+  border: 1px solid rgba(31, 41, 55, 0.85);
+}
+
+.clause-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  font-size: 12px;
+  margin-bottom: 6px;
+}
+
+.clause-id {
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.clause-score {
+  font-weight: 500;
+  color: var(--accent);
+}
+
+.clause-tags {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(248, 113, 113, 0.1);
+  color: #fecaca;
+}
+
+.clause-text {
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* ===== Responsive tweaks ===== */
+
+@media (max-width: 720px) {
+  .main-content {
+    padding: 14px;
+  }
+
+  .card {
+    padding: 16px 14px;
+  }
+
+  .doc-table {
+    font-size: 12px;
+  }
+
+  .top-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+}

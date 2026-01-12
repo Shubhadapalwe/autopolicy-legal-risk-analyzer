@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>AutoPolicy – Dashboard</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="page">
+        <!-- Top bar -->
+        <header class="top-bar">
+            <div class="logo">AutoPolicy</div>
+            <div class="top-bar-right">
+                <span class="top-bar-subtitle">Legal Risk Analyzer</span>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <!-- Upload card -->
+            <section class="card">
+                <div class="upload-layout">
+                    <div class="upload-main">
+                        <h1>Upload new document</h1>
+                        <p>Upload a PDF or image (screenshot). The system will extract clauses, score risk, and store results in your AutoPolicy database.</p>
+
+                        <form method="post" action="{{ url_for('upload') }}" enctype="multipart/form-data">
+                            <input type="file" name="file" required>
+                            <button type="submit" class="btn btn-primary">
+                                Upload &amp; Analyze
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="upload-side">
+                        <strong>Tips</strong>
+                        <ul>
+                            <li>Supported: PDF, PNG, JPG.</li>
+                            <li>For long pages, take clear full-page screenshots.</li>
+                            <li>Results will appear in the table below.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Documents table -->
+            <section class="card">
+                <h2>Your documents</h2>
+
+                <div class="table-wrapper">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Filename</th>
+                                <th>Total clauses</th>
+                                <th>Risky clauses</th>
+                                <th>Risk %</th>
+                                <th>Rating</th>
+                                <th>Open</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for d in documents %}
+                                <tr>
+                                    <td>{{ d.id }}</td>
+                                    <td>{{ d.original_filename }}</td>
+                                    <td>{{ d.total_clauses or 0 }}</td>
+                                    <td>{{ d.risky_clauses or 0 }}</td>
+                                    <td>
+                                        {% if d.total_clauses %}
+                                            {{ (d.risky_clauses * 100.0 / d.total_clauses) | round(2) }}
+                                        {% else %}
+                                            0.00
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ d.overall_rating or "-" }}</td>
+                                    <td>
+                                        <a href="{{ url_for('document_detail', doc_id=d.id) }}">View</a>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="7">No documents yet. Upload one above to get started.</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Charts -->
+            <section class="card">
+                <h2>Risk overview</h2>
+
+                <div class="dashboard-grid">
+                    <div>
+                        <h3 style="margin-top: 0;">Risk % per document</h3>
+                        <div class="chart-wrapper">
+                            <canvas id="docRiskChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 style="margin-top: 0;">Overall risk types</h3>
+                        <div class="chart-wrapper">
+                            <canvas id="riskTypeChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="footer-note">
+                    Charts are based on all documents currently stored in AutoPolicy.
+                </p>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // ---- Bar chart: Risk % per document ----
+        (function () {
+            var canvas = document.getElementById("docRiskChart");
+            if (!canvas) {
+                return;
+            }
+            var ctx = canvas.getContext("2d");
+
+            var labels = [
+                {% for d in documents %}
+                    "{{ d.original_filename }}"{% if not loop.last %}, {% endif %}
+                {% endfor %}
+            ];
+
+            var values = [
+                {% for d in documents %}
+                    {% if d.total_clauses %}
+                        {{ (d.risky_clauses * 100.0 / d.total_clauses) | round(2) }}
+                    {% else %}
+                        0
+                    {% endif %}
+                    {% if not loop.last %}, {% endif %}
+                {% endfor %}
+            ];
+
+            if (!labels.length) {
+                labels = ["No documents"];
+                values = [0];
+            }
+
+            new Chart(ctx, {
+                type: "bar",
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: "Risk %",
+                        data: values
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true
+                        }
+                    }
+                }
+            });
+        })();
+
+        // ---- Pie chart: Overall risk types ----
+        (function () {
+            var canvas = document.getElementById("riskTypeChart");
+            if (!canvas) {
+                return;
+            }
+            var ctx = canvas.getContext("2d");
+
+            var labels = [
+                {% for r in summary.get('risk_by_type', []) %}
+                    "{{ r.risk_type }}"{% if not loop.last %}, {% endif %}
+                {% endfor %}
+            ];
+
+            var values = [
+                {% for r in summary.get('risk_by_type', []) %}
+                    {{ r.risky_clauses }}{% if not loop.last %}, {% endif %}
+                {% endfor %}
+            ];
+
+            if (!labels.length) {
+                labels = ["no_risk"];
+                values = [1];
+            }
+
+            new Chart(ctx, {
+                type: "pie",
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: values
+                    }]
+                },
+                options: {
+                    plugins: {
+                        legend: {
+                            position: "bottom"
+                        }
+                    }
+                }
+            });
+        })();
+    </script>
+</body>
+</html>

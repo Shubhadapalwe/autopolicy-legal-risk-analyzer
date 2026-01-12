@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>AutoPolicy – Your documents</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+<div class="page">
+    <!-- Top bar / header -->
+    <header class="top-bar">
+        <div class="logo">
+            AutoPolicy
+        </div>
+        <div class="top-bar-right">
+            <div class="top-bar-subtitle">
+                Legal Risk Analyzer · {{ session.get("user_email") }}
+            </div>
+            <a href="{{ url_for('logout') }}" class="btn btn-secondary small-btn">
+                Logout
+            </a>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <!-- Flash messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-container">
+                    {% for category, message in messages %}
+                        <div class="flash flash-{{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <!-- Upload card -->
+        <section class="card card-upload">
+            <div class="card-header-row">
+                <div>
+                    <h1>Upload new document</h1>
+                    <p class="helper-text">
+                        Upload a PDF or image (screenshot). The system will run your AutoPolicy pipeline
+                        and store results in the database.
+                    </p>
+                </div>
+            </div>
+
+            <form method="post" enctype="multipart/form-data" class="upload-form">
+                <div class="upload-row">
+                    <label class="file-input-wrapper">
+                        <span class="file-input-label">Choose file</span>
+                        <input type="file" name="file" accept=".pdf,.png,.jpg,.jpeg">
+                        <span class="file-input-filename js-file-name">No file chosen</span>
+                    </label>
+
+                    <button type="submit" class="btn btn-primary">
+                        Upload &amp; Analyze
+                    </button>
+                </div>
+
+                <div class="upload-meta">
+                    <div>
+                        <div class="meta-title">Tips</div>
+                        <div class="meta-text">
+                            For long pages, take clear full-page screenshots. Results will appear in the table below.
+                        </div>
+                    </div>
+                    <div>
+                        <div class="meta-title">Supported formats</div>
+                        <div class="meta-text">
+                            • PDF (terms &amp; conditions, bank forms, etc.)<br>
+                            • PNG / JPG screenshots of legal pages
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </section>
+
+        <!-- Documents table card -->
+        <section class="card card-documents">
+            <div class="card-header-row">
+                <div>
+                    <h2>Your documents</h2>
+                    <p class="helper-text">
+                        Each row represents one analyzed document. Click <span class="pill pill-mini">View</span>
+                        to see the detailed risk dashboard.
+                    </p>
+                </div>
+                {% if documents and documents|length > 0 %}
+                    <div class="doc-count-pill">
+                        {{ documents|length }} document{% if documents|length != 1 %}s{% endif %}
+                    </div>
+                {% endif %}
+            </div>
+
+            {% if not documents or documents|length == 0 %}
+                <p class="empty-state">
+                    No documents yet. Upload your first PDF or screenshot above to see it here.
+                </p>
+            {% else %}
+                <div class="table-wrapper">
+                    <table class="table documents-table">
+                        <thead>
+                        <tr>
+                            <th class="col-center">S. No.</th>
+                            <th>Filename</th>
+                            <th class="col-center">Total clauses</th>
+                            <th class="col-center">Risky clauses</th>
+                            <th class="col-center">Risk %</th>
+                            <th class="col-center">Rating</th>
+                            <th class="col-center">Open</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for doc in documents %}
+                            {% set rp = doc.risk_percent or 0 %}
+                            {% if rp <= 1 %}
+                                {% set risk_level = "low" %}
+                            {% elif rp <= 5 %}
+                                {% set risk_level = "medium" %}
+                            {% elif rp <= 15 %}
+                                {% set risk_level = "high" %}
+                            {% else %}
+                                {% set risk_level = "critical" %}
+                            {% endif %}
+
+                            <tr class="table-row">
+                                <td class="col-center">{{ loop.index }}</td>
+
+                                <td class="doc-name">
+                                    <span class="doc-name-text">{{ doc.original_filename }}</span>
+                                </td>
+
+                                <td class="col-center">
+                                    {{ doc.total_clauses or 0 }}
+                                </td>
+
+                                <td class="col-center">
+                                    {{ doc.risky_clauses or 0 }}
+                                </td>
+
+                                <td class="col-center">
+                                    <span class="pill pill-risk pill-risk-{{ risk_level }}">
+                                        {{ "%.2f"|format(doc.risk_percent or 0) }}%
+                                    </span>
+                                </td>
+
+                                <td class="col-center">
+                                    {% set rating = doc.overall_rating or "-" %}
+                                    <span class="pill pill-rating pill-rating-{{ rating|lower }}">
+                                        {{ rating }}
+                                    </span>
+                                </td>
+
+                                <td class="col-center">
+                                    <a href="{{ url_for('document_detail', doc_id=doc.id) }}"
+                                       class="link-primary">
+                                        View
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+        </section>
+    </main>
+</div>
+
+<script>
+    // tiny enhancement: show selected filename next to the Choose file label
+    (function () {
+        var input = document.querySelector('input[type="file"][name="file"]');
+        var label = document.querySelector('.js-file-name');
+        if (!input || !label) return;
+
+        input.addEventListener('change', function () {
+            if (!input.files || input.files.length === 0) {
+                label.textContent = 'No file chosen';
+            } else {
+                label.textContent = input.files[0].name;
+            }
+        });
+    })();
+</script>
+</body>
+</html>

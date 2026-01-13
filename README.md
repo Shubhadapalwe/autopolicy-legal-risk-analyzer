@@ -23,29 +23,36 @@ AutoPolicy is a **student academic project**, not a replacement for a profession
 Screenshots
 
 
-### A. Web app – login, signup & dashboard
+## Screenshots
 
-[![Login page – gradient hero + login card](screenshots/01_login_page.png)](screenshots/01_login_page.png)
-[![Register page – create account](screenshots/02_register_page.png)](screenshots/02_register_page.png)
-
-[![Dashboard – empty state after login](screenshots/03_dashboard_empty.png)](screenshots/03_dashboard_empty.png)
-[![Dashboard – documents table with risk grades](screenshots/04_dashboard_with_results.png)](screenshots/04_dashboard_with_results.png)
-
-[![Upload dialog – choosing a PDF](screenshots/05_upload_choose_file.png)](screenshots/05_upload_choose_file.png)
-[![Document details – donut chart + risky clauses list](screenshots/06_document_detail.png)](screenshots/06_document_detail.png)
+_All screenshots are stored in the `Screenshots/` folder in this repository._
 
 ---
 
-### B. Chrome extension – risk analysis on live website
+### A. Web app – login & dashboard
 
-[![Extension popup – initial state on Flipkart Terms page](screenshots/07_extension_popup_open.png)](screenshots/07_extension_popup_open.png)
+| # | Description | Screenshot |
+|---|-------------|------------|
+| 1 | Login page | [![Login page](Screenshots/screenshots:01_login_page.png)](Screenshots/screenshots:01_login_page.png) |
+| 2 | Register page | [![Register page](Screenshots/screenshots:02_register_page.png)](Screenshots/screenshots:02_register_page.png) |
+| 3 | Empty dashboard after first login | [![Empty dashboard](Screenshots/screenshots:03_empty_dashboard.png)](Screenshots/screenshots:03_empty_dashboard.png) |
+| 4 | Dashboard with analyzed documents | [![Filled dashboard](Screenshots/screenshots:04_Dashboard.png)](Screenshots/screenshots:04_Dashboard.png) |
+| 5 | Uploading a new PDF from the dashboard | [![Choose file dialog](Screenshots/Screenshot:05_pipeline_complete.png)](Screenshots/Screenshot:05_pipeline_complete.png) |
+| 6 | Clause-level risk dashboard for a single document | [![Document risk view](Screenshots/Screenshot:06_view.png)](Screenshots/Screenshot:06_view.png) |
 
-[![Extension – page text scanned and loaded](screenshots/08_extension_page_text_loaded.png)](screenshots/08_extension_page_text_loaded.png)
-[![Extension – risk analysis result for full page](screenshots/09_extension_scan_result.png)](screenshots/09_extension_scan_result.png)
+---
 
-[![Extension – analysis result for a small selected paragraph](screenshots/10_extension_selected_text_result.png)](screenshots/10_extension_selected_text_result.png)
-[![Extension – Marathi translation of selected text](screenshots/11_extension_translation_marathi.png)](screenshots/11_extension_translation_marathi.png)
-[![Web page – risky clause highlighted in yellow](screenshots/12_extension_highlighted_clause.png)](screenshots/12_extension_highlighted_clause.png)
+### B. Chrome extension – live website analysis
+
+| # | Description | Screenshot |
+|---|-------------|------------|
+| 7 | Flipkart Terms & Conditions page being analyzed | [![Flipkart T&C page](Screenshots/Screenshot:07_flipkart_test.png)](Screenshots/Screenshot:07_flipkart_test.png) |
+| 8 | AutoPolicy Chrome extension popup on the page | [![Extension popup](Screenshots/Screenshot:08_chrome_extension_popup.png)](Screenshots/Screenshot:08_chrome_extension_popup.png) |
+| 9 | Full-page text extracted into the extension | [![Text extraction](Screenshots/Screenshot:08_text_extraction.png)](Screenshots/Screenshot:08_text_extraction.png) |
+|10 | Risk result after scanning the whole page | [![Whole page risk result](Screenshots/Screenshot:10_result_scanned.png)](Screenshots/Screenshot:10_result_scanned.png) |
+|11 | Risk result for selected text only | [![Selected text result](Screenshots/Screenshot:11_selected_text_result.png)](Screenshots/Screenshot:11_selected_text_result.png) |
+|12 | Risky clause highlighted back on the webpage | [![Highlighted risky clause](Screenshots/Screenshot:12_highlighted_text.png)](Screenshots/Screenshot:12_highlighted_text.png) |
+|13 | Selected text translated (e.g., to Marathi) + risk analysis | [![Selected text translation](Screenshots/Screenshot:13_selected_text_translation.png)](Screenshots/Screenshot:13_selected_text_translation.png) |
 
 
 
